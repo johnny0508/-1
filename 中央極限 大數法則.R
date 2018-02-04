@@ -61,3 +61,82 @@ clt_exp_normal(100)
 clt_exp_normal(1000)
 
 
+
+clt_math <- function(n,i=1000,pop_mean=0,pop_sd=100){
+  sample=0
+  for (x in 1 :i) {
+  sample[x] <- sum( rnorm(n,pop_mean,pop_sd))/n}
+  
+  
+  hist(sample,xlim = range(pop_mean-15,pop_mean+15),main= paste(n,"個取樣的常態"))
+
+}
+
+
+#在不變的區間下，樣本平均數的分布，會以根號n的速度收斂
+
+par(mfrow=c(2,2))
+clt_math(100)
+clt_math(500)
+clt_math(1000)
+clt_math(10000)
+
+#母體是指數分配也一樣
+
+
+
+clt_math_exp <- function(n,i=1000,pop_mean=1){
+  sample=0
+  for (x in 1 :i) {
+    sample[x] <- sum( rexp(n,1/pop_mean))/n}
+  
+  
+  hist(sample,xlim = range(0,2),main= paste(n,"個取樣的指數"))
+  
+}
+
+
+par(mfrow=c(2,2))
+clt_math_exp(100)
+clt_math_exp(500)
+clt_math_exp(1000)
+clt_math_exp(10000)
+
+
+
+#假設樣本平均是以根號n收斂，在將其乘上根號n則n就無法影響樣本平均之分佈
+
+clt_math_n <- function(n,i=1000,pop_mean=0,pop_sd=100){
+  sample=0
+  for (x in 1 :i) {
+    sample[x] <- sum( rnorm(n,pop_mean,pop_sd))/n}
+hist((sample-pop_mean)/pop_sd*n^0.5,xlim = range(-5,5),main= paste(n,"個取樣的常態","\n(除上根號n)"))
+  
+}
+
+par(mfrow=c(2,2))
+clt_math_n(100)
+clt_math_n(500)
+clt_math_n(1000)
+clt_math_n(10000)
+
+
+#試驗若母體為指數是否有相同性質
+
+
+clt_math_n_exp <- function(n,i=1000,pop_mean=1){
+  sample=0
+  for (x in 1 :i) {
+    sample[x] <- sum( rexp(n,1/pop_mean))/n}
+  hist((sample-pop_mean)/0.2*n^0.5,xlim = range(-13,13),main= paste(n,"個取樣的指數","\n(除上根號n)"),breaks=30)
+}
+  
+
+par(mfrow=c(2,2))
+clt_math_n_exp(100)
+clt_math_n_exp(500)
+clt_math_n_exp(1000)
+clt_math_n_exp(10000)
+
+
+
